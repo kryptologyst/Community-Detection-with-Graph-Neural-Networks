@@ -1,0 +1,89 @@
+# Model configuration
+model:
+  type: "gcn"  # Options: gcn, sage, gat, gin
+  input_dim: 16
+  hidden_dim: 64
+  output_dim: 32
+  n_communities: 4
+  n_layers: 2
+  dropout: 0.5
+  
+  # GAT specific
+  n_heads: 4
+  concat: true
+  
+  # GIN specific
+  eps: 0.0
+  
+  # SAGE specific
+  aggregator: "mean"
+
+# Data configuration
+data:
+  dataset: "sbm"  # Options: sbm, karate, erdos_renyi, barabasi_albert
+  n_nodes: 1000
+  n_communities: 4
+  p_in: 0.3
+  p_out: 0.05
+  
+  # Split ratios
+  train_ratio: 0.6
+  val_ratio: 0.2
+  test_ratio: 0.2
+  
+  # Data augmentation
+  add_self_loops: true
+  normalize_features: true
+
+# Training configuration
+training:
+  n_epochs: 200
+  learning_rate: 0.01
+  weight_decay: 5e-4
+  patience: 20
+  min_delta: 0.001
+  batch_size: 1  # For graph-level tasks
+  
+  # Optimization
+  optimizer: "adam"
+  scheduler: null
+  gradient_clipping: null
+
+# Evaluation configuration
+evaluation:
+  metrics:
+    - "accuracy"
+    - "nmi"
+    - "ari"
+    - "f1_macro"
+    - "f1_micro"
+    - "modularity"
+  
+  # Baseline methods to compare
+  baselines:
+    - "kmeans"
+    - "louvain"
+
+# Logging and visualization
+logging:
+  level: "INFO"
+  log_dir: "logs"
+  save_model: true
+  save_plots: true
+  
+  # Experiment tracking
+  use_wandb: false
+  wandb_project: "community-detection"
+  
+  # Tensorboard
+  use_tensorboard: true
+
+# System configuration
+system:
+  device: "auto"  # auto, cuda, mps, cpu
+  seed: 42
+  num_workers: 4
+  pin_memory: true
+  
+  # Mixed precision
+  use_amp: false
